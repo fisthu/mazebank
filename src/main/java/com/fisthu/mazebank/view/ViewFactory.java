@@ -1,6 +1,8 @@
 package com.fisthu.mazebank.view;
 
 import com.fisthu.mazebank.controller.client.ClientController;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -10,9 +12,17 @@ import java.io.IOException;
 
 public class ViewFactory {
 
+    // Client View
     private AnchorPane dashboardView;
+    private AnchorPane transactionView;
+    private final StringProperty clientSelectedMenuItem;
 
     public ViewFactory() {
+        this.clientSelectedMenuItem = new SimpleStringProperty("");
+    }
+
+    public StringProperty getClientSelectedMenuItemProperty() {
+        return clientSelectedMenuItem;
     }
 
     public AnchorPane getDashboardView() throws IOException {
@@ -21,6 +31,14 @@ public class ViewFactory {
         }
 
         return dashboardView;
+    }
+
+    public AnchorPane getTransactionView() throws IOException {
+        if (transactionView == null) {
+            transactionView = new FXMLLoader(getClass().getResource("/fxml/client/transaction.fxml")).load();
+        }
+
+        return transactionView;
     }
 
     public void showLoginWindow() throws IOException {
