@@ -29,6 +29,13 @@ public class ClientController implements Initializable {
                         throw new RuntimeException(e);
                     }
                 }
+                case ACCOUNT -> {
+                    try {
+                        client_parent.setCenter(Model.INSTANCE.getViewFactory().getClientAccountView());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 default -> {
                     try {
                         client_parent.setCenter(Model.INSTANCE.getViewFactory().getDashboardView());
