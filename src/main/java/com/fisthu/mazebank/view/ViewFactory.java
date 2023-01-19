@@ -35,6 +35,10 @@ public class ViewFactory {
         buildStage(fxmlLoader);
     }
 
+    public void closeStage(Stage stage) {
+        stage.close();
+    }
+
     private void buildStage(FXMLLoader fxmlLoader) throws IOException {
         Scene scene = new Scene(fxmlLoader.load());
 

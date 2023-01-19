@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +28,9 @@ public class LoginController implements Initializable {
 
     private void loginAction() {
         try {
+            Stage stage = (Stage) errorLabel.getScene().getWindow();
+            Model.INSTANCE.getViewFactory().closeStage(stage);
+
             Model.INSTANCE.getViewFactory().showClientWindow();
         } catch (IOException e) {
             throw new RuntimeException(e);
