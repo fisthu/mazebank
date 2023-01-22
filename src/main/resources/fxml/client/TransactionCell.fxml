@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane prefHeight="60.0" prefWidth="550.0" styleClass="cell_container" stylesheets="@../../styles/transaction-cell.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fisthu.mazebank.controller.client.TransactionCellController">
+    <Label fx:id="transDateLbl" layoutX="77.0" layoutY="22.0" styleClass="trans_date_lbl" text="2022-10-10" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="22.0" />
+    <VBox prefHeight="50.0" prefWidth="50.0" styleClass="trans_icon_container" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="5.0">
+        <FontAwesomeIconView fx:id="inIcon" glyphName="LONG_ARROW_RIGHT" size="17" />
+        <FontAwesomeIconView fx:id="outIcon" glyphName="LONG_ARROW_LEFT" size="17" />
+    </VBox>
+    <Label fx:id="senderLbl" layoutX="191.0" layoutY="22.0" styleClass="trans_payee_address_lbl" text="Oki" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="22.0" />
+    <Line endY="20.0" layoutX="275.0" layoutY="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="300.0" />
+    <Label fx:id="receiverLbl" layoutX="363.0" layoutY="22.0" styleClass="trans_payee_address_lbl" text="Fisthu" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="22.0" />
+    <Label fx:id="amountLbl" layoutX="487.0" layoutY="16.0" styleClass="trans_amount_lbl" text="2000" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="16.0">
+        <graphic>
+            <FontAwesomeIconView glyphName="DOLLAR" />
+        </graphic>
+    </Label>
+</AnchorPane>
