@@ -24,7 +24,11 @@ public class AdminController implements Initializable {
                     }
                 }
                 case DEPOSIT -> {
-                    // TODO
+                    try {
+                        adminParent.setCenter(Model.INSTANCE.getViewFactory().getDepositView());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 default -> {
                     try {
