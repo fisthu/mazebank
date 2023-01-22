@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class ViewFactory {
 
+    private AccountType loginAccountType;
     // Client View
     private AnchorPane dashboardView;
     private AnchorPane transactionView;
@@ -22,8 +23,17 @@ public class ViewFactory {
     private AnchorPane createClientView;
 
     public ViewFactory() {
+        this.loginAccountType = AccountType.CLIENT;
         this.clientSelectedMenuItem = new SimpleObjectProperty<>();
         this.adminSelectedMenuItem = new SimpleObjectProperty<>();
+    }
+
+    public AccountType getLoginAccountType() {
+        return loginAccountType;
+    }
+
+    public void setLoginAccountType(AccountType loginAccountType) {
+        this.loginAccountType = loginAccountType;
     }
 
     public ObjectProperty<ClientMenuOption> getClientSelectedMenuItemProperty() {
