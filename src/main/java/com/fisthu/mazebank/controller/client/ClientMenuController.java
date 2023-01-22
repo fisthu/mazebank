@@ -1,6 +1,5 @@
 package com.fisthu.mazebank.controller.client;
 
-import com.fisthu.mazebank.model.MainMenu;
 import com.fisthu.mazebank.model.Model;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -28,14 +27,14 @@ public class ClientMenuController implements Initializable {
     }
 
     private void onDashboardEvent() {
-        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set(MainMenu.DASHBOARD.name());
+        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set("DASHBOARD");
     }
 
     private void onTransactionEvent() {
-        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set(MainMenu.TRANSACTION.name());
+        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set("TRANSACTION");
     }
 
     private void onAccountEvent() {
-        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set(MainMenu.ACCOUNT.name());
+        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set("ACCOUNT");
     }
 }
