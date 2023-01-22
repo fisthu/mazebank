@@ -2,8 +2,8 @@ package com.fisthu.mazebank.view;
 
 import com.fisthu.mazebank.controller.admin.AdminController;
 import com.fisthu.mazebank.controller.client.ClientController;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -16,17 +16,17 @@ public class ViewFactory {
     // Client View
     private AnchorPane dashboardView;
     private AnchorPane transactionView;
-    private final StringProperty clientSelectedMenuItem;
+    private final ObjectProperty<ClientMenuOption> clientSelectedMenuItem;
     private AnchorPane clientAccountView;
-    private final StringProperty adminSelectedMenuItem;
+    private final ObjectProperty<AdminMenuOption> adminSelectedMenuItem;
     private AnchorPane createClientView;
 
     public ViewFactory() {
-        this.clientSelectedMenuItem = new SimpleStringProperty("");
-        this.adminSelectedMenuItem = new SimpleStringProperty("");
+        this.clientSelectedMenuItem = new SimpleObjectProperty<>();
+        this.adminSelectedMenuItem = new SimpleObjectProperty<>();
     }
 
-    public StringProperty getClientSelectedMenuItemProperty() {
+    public ObjectProperty<ClientMenuOption> getClientSelectedMenuItemProperty() {
         return clientSelectedMenuItem;
     }
 
@@ -54,7 +54,7 @@ public class ViewFactory {
         return clientAccountView;
     }
 
-    public StringProperty getAdminSelectedMenuItem() {
+    public ObjectProperty<AdminMenuOption> getAdminSelectedMenuItem() {
         return adminSelectedMenuItem;
     }
 

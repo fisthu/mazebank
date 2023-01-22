@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static com.fisthu.mazebank.view.ClientMenuOption.*;
+
 public class ClientMenuController implements Initializable {
     public Button dashboardBtn;
     public Button transactionBtn;
@@ -27,14 +29,14 @@ public class ClientMenuController implements Initializable {
     }
 
     private void onDashboardEvent() {
-        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set("DASHBOARD");
+        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set(DASHBOARD);
     }
 
     private void onTransactionEvent() {
-        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set("TRANSACTION");
+        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set(TRANSACTION);
     }
 
     private void onAccountEvent() {
-        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set("ACCOUNT");
+        Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set(ACCOUNT);
     }
 }

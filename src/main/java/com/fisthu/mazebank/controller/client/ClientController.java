@@ -17,14 +17,14 @@ public class ClientController implements Initializable {
 
         Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().addListener((observableValue, oldVal, newVal) -> {
             switch (newVal) {
-                case "TRANSACTION" -> {
+                case TRANSACTION -> {
                     try {
                         client_parent.setCenter(Model.INSTANCE.getViewFactory().getTransactionView());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 }
-                case "ACCOUNT" -> {
+                case ACCOUNT -> {
                     try {
                         client_parent.setCenter(Model.INSTANCE.getViewFactory().getClientAccountView());
                     } catch (IOException e) {

@@ -1,6 +1,7 @@
 package com.fisthu.mazebank.controller.admin;
 
 import com.fisthu.mazebank.model.Model;
+import com.fisthu.mazebank.view.AdminMenuOption;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
@@ -23,6 +24,6 @@ public class AdminMenuController implements Initializable {
     }
 
     private void onCreateClientEvent() {
-        Model.INSTANCE.getViewFactory().getAdminSelectedMenuItem().set("createClient");
+        Model.INSTANCE.getViewFactory().getAdminSelectedMenuItem().set(AdminMenuOption.CREATE_CLIENT);
     }
 }
