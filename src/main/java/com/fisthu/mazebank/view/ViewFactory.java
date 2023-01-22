@@ -25,6 +25,8 @@ public class ViewFactory {
     private AnchorPane createClientView;
     private AnchorPane adminClientsView;
 
+    private AnchorPane depositView;
+
     public ViewFactory() {
         this.loginAccountType = AccountType.CLIENT;
         this.clientSelectedMenuItem = new SimpleObjectProperty<>();
@@ -85,6 +87,14 @@ public class ViewFactory {
         }
 
         return adminClientsView;
+    }
+
+    public AnchorPane getDepositView() throws IOException {
+        if (depositView == null) {
+            depositView = new FXMLLoader(getClass().getResource("/fxml/admin/Deposit.fxml")).load();
+        }
+
+        return depositView;
     }
 
     public void showLoginWindow() throws IOException {
