@@ -26,9 +26,24 @@ public class LoginController implements Initializable {
 
         accountSelector.setItems(FXCollections.observableArrayList(AccountType.CLIENT, AccountType.ADMIN));
         accountSelector.setValue(Model.INSTANCE.getViewFactory().getLoginAccountType());
-        accountSelector.valueProperty().addListener(observable -> Model.INSTANCE.getViewFactory().setLoginAccountType(accountSelector.getValue()));
+        accountSelector.valueProperty().addListener(observable -> listenOnSelectorChange());
 
-        loginBtn.setOnAction(actionEvent -> loginAction());
+        loginBtn.setOnAction(actionEvent -> {
+            try {
+                loginAction();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void listenOnSelectorChange() {
+        Model.INSTANCE.getViewFactory().setLoginAccountType(accountSelector.getValue());
+        if (Model.INSTANCE.getViewFactory().getLoginAccountType() == AccountType.CLIENT) {
+            payeeAddressLbl.setText("Payee Address");
+        } else {
+            payeeAddressLbl.setText("Username");
+        }
     }
 
     private void closeLoggedStage() {
@@ -36,26 +51,20 @@ public class LoginController implements Initializable {
         Model.INSTANCE.getViewFactory().closeStage(stage);
     }
 
-    private void loginAction() {
-        try {
+    private void loginAction() throws IOException {
+        Model.INSTANCE.evaluateCred(payeeAddressField.getText(), passwordField.getText());
+        if (Model.INSTANCE.isLoggedIn()) {
+            closeLoggedStage();
 
             if (Model.INSTANCE.getViewFactory().getLoginAccountType() == AccountType.CLIENT) {
-
-                Model.INSTANCE.evaluateClientCred(payeeAddressField.getText(), passwordField.getText());
-
-                if (Model.INSTANCE.isClientLoggedIn()) {
-                    closeLoggedStage();
-                    Model.INSTANCE.getViewFactory().showClientWindow();
-                } else {
-                    payeeAddressField.setText("");
-                    passwordField.setText("");
-                    errorLabel.setText("Login failed");
-                }
+                Model.INSTANCE.getViewFactory().showClientWindow();
             } else {
                 Model.INSTANCE.getViewFactory().showAdminWindow();
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } else {
+            payeeAddressField.setText("");
+            passwordField.setText("");
+            errorLabel.setText("Login failed");
         }
     }
 }

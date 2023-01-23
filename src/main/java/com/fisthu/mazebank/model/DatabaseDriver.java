@@ -3,7 +3,7 @@ package com.fisthu.mazebank.model;
 import java.sql.*;
 
 public class DatabaseDriver {
-    private Connection connection;
+    private final Connection connection;
 
     public DatabaseDriver() {
         try {
@@ -25,6 +25,14 @@ public class DatabaseDriver {
     }
 
     // admin section
+    public ResultSet getAdminData(String username, String password) {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery("select * from Admins where Username = '" + username + "' and Password='" + password + "'");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // utility methods
 }

@@ -11,18 +11,14 @@ public enum Model {
     INSTANCE;
     private final ViewFactory viewFactory;
     private final DatabaseDriver databaseDriver;
-    private AccountType loginAccountType = AccountType.CLIENT;
-
     private Client client;
-
-    private boolean clientLoggedIn;
+    private boolean loggedIn;
 
     Model() {
         viewFactory = new ViewFactory();
         databaseDriver = new DatabaseDriver();
 
         // client data section
-        clientLoggedIn = false;
         client = new Client("", "", "", null, null, null);
 
         // admin data section
@@ -36,12 +32,8 @@ public enum Model {
         return databaseDriver;
     }
 
-    public boolean isClientLoggedIn() {
-        return clientLoggedIn;
-    }
-
-    public void setClientLoggedIn(boolean flag) {
-        clientLoggedIn = flag;
+    public boolean isLoggedIn() {
+        return loggedIn;
     }
 
     public Client getClient() {
@@ -52,7 +44,15 @@ public enum Model {
         this.client = client;
     }
 
-    public void evaluateClientCred(String payeeAddress, String password) {
+    public void evaluateCred(String username, String password) {
+        if (Model.INSTANCE.getViewFactory().getLoginAccountType() == AccountType.CLIENT) {
+            evaluateClientCred(username, password);
+        } else {
+            evaluateAdminCred(username, password);
+        }
+    }
+
+    private void evaluateClientCred(String payeeAddress, String password) {
         ResultSet clientData = databaseDriver.getClientData(payeeAddress, password);
         try {
             if (clientData != null && clientData.isBeforeFirst()) {
@@ -62,10 +62,22 @@ public enum Model {
 
                 LocalDate date = getLocalDate(clientData.getString("Date"));
                 client.dateCreatedProperty().set(date);
-                clientLoggedIn = true;
+                loggedIn = true;
                 // TODO
 
 
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void evaluateAdminCred(String username, String password) {
+        ResultSet adminData = databaseDriver.getAdminData(username, password);
+
+        try {
+            if (adminData != null && adminData.isBeforeFirst()) {
+                loggedIn = true;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
