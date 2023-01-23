@@ -25,6 +25,8 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        errorLabel.setText("");
+
         accountSelector.setItems(FXCollections.observableArrayList(AccountType.CLIENT, AccountType.ADMIN));
         accountSelector.setValue(Model.INSTANCE.getViewFactory().getLoginAccountType());
         accountSelector.valueProperty().addListener(observable -> Model.INSTANCE.getViewFactory().setLoginAccountType(accountSelector.getValue()));
@@ -32,13 +34,26 @@ public class LoginController implements Initializable {
         loginBtn.setOnAction(actionEvent -> loginAction());
     }
 
+    private void closeLoggedStage() {
+        Stage stage = (Stage) errorLabel.getScene().getWindow();
+        Model.INSTANCE.getViewFactory().closeStage(stage);
+    }
+
     private void loginAction() {
         try {
-            Stage stage = (Stage) errorLabel.getScene().getWindow();
-            Model.INSTANCE.getViewFactory().closeStage(stage);
 
             if (Model.INSTANCE.getViewFactory().getLoginAccountType() == AccountType.CLIENT) {
-                Model.INSTANCE.getViewFactory().showClientWindow();
+
+                Model.INSTANCE.evaluateClientCred(payeeAddressField.getText(), passwordField.getText());
+
+                if (Model.INSTANCE.isClientLoggedIn()) {
+                    closeLoggedStage();
+                    Model.INSTANCE.getViewFactory().showClientWindow();
+                } else {
+                    payeeAddressField.setText("");
+                    passwordField.setText("");
+                    errorLabel.setText("Login failed");
+                }
             } else {
                 Model.INSTANCE.getViewFactory().showAdminWindow();
             }

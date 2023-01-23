@@ -1,8 +1,6 @@
 package com.fisthu.mazebank.model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DatabaseDriver {
     private Connection connection;
@@ -16,6 +14,15 @@ public class DatabaseDriver {
     }
 
     // client section
+
+    public ResultSet getClientData(String pAddress, String password) {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery("select * from Clients where PayeeAddress = '" + pAddress + "' and Password='" + password + "'");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // admin section
 
