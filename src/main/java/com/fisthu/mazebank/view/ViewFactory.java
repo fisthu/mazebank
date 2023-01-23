@@ -25,7 +25,6 @@ public class ViewFactory {
     private final ObjectProperty<AdminMenuOption> adminSelectedMenuItem;
     private AnchorPane createClientView;
     private AnchorPane adminClientsView;
-
     private AnchorPane depositView;
 
     public ViewFactory() {

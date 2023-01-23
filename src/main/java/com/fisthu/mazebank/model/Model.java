@@ -2,7 +2,9 @@ package com.fisthu.mazebank.model;
 
 import com.fisthu.mazebank.view.AccountType;
 import com.fisthu.mazebank.view.ViewFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -32,6 +34,10 @@ public enum Model {
         return databaseDriver;
     }
 
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
     public boolean isLoggedIn() {
         return loggedIn;
     }
@@ -45,11 +51,18 @@ public enum Model {
     }
 
     public void evaluateCred(String username, String password) {
-        if (Model.INSTANCE.getViewFactory().getLoginAccountType() == AccountType.CLIENT) {
+        if (viewFactory.getLoginAccountType() == AccountType.CLIENT) {
             evaluateClientCred(username, password);
         } else {
             evaluateAdminCred(username, password);
         }
+    }
+
+    public void handleLogout(Stage currentStage) throws IOException {
+        viewFactory.closeStage(currentStage);
+        loggedIn = false;
+
+        viewFactory.showLoginWindow();
     }
 
     private void evaluateClientCred(String payeeAddress, String password) {

@@ -3,7 +3,9 @@ package com.fisthu.mazebank.controller.client;
 import com.fisthu.mazebank.model.Model;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -26,6 +28,7 @@ public class ClientMenuController implements Initializable {
         dashboardBtn.setOnAction(actionEvent -> onDashboardEvent());
         transactionBtn.setOnAction(actionEvent -> onTransactionEvent());
         accountBtn.setOnAction(actionEvent -> onAccountEvent());
+        logoutBtn.setOnAction(event -> onLogout());
     }
 
     private void onDashboardEvent() {
@@ -38,5 +41,14 @@ public class ClientMenuController implements Initializable {
 
     private void onAccountEvent() {
         Model.INSTANCE.getViewFactory().getClientSelectedMenuItemProperty().set(ACCOUNT);
+    }
+
+    private void onLogout() {
+        Stage stage = (Stage) dashboardBtn.getScene().getWindow();
+        try {
+            Model.INSTANCE.handleLogout(stage);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
