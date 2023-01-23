@@ -4,10 +4,7 @@ import com.fisthu.mazebank.model.Model;
 import com.fisthu.mazebank.view.AccountType;
 import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,7 +16,7 @@ public class LoginController implements Initializable {
     public ChoiceBox<AccountType> accountSelector;
     public Label payeeAddressLbl;
     public TextField payeeAddressField;
-    public TextField passwordField;
+    public PasswordField passwordField;
     public Button loginBtn;
     public Label errorLabel;
 
