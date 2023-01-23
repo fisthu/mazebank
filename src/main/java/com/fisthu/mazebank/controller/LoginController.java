@@ -40,9 +40,9 @@ public class LoginController implements Initializable {
     private void listenOnSelectorChange() {
         Model.INSTANCE.getViewFactory().setLoginAccountType(accountSelector.getValue());
         if (Model.INSTANCE.getViewFactory().getLoginAccountType() == AccountType.CLIENT) {
-            payeeAddressLbl.setText("Payee Address");
+            payeeAddressLbl.setText("Payee Address:");
         } else {
-            payeeAddressLbl.setText("Username");
+            payeeAddressLbl.setText("Username:");
         }
     }
 
