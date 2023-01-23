@@ -68,7 +68,7 @@ public enum Model {
     private void evaluateClientCred(String payeeAddress, String password) {
         ResultSet clientData = databaseDriver.getClientData(payeeAddress, password);
         try {
-            if (clientData != null && clientData.isBeforeFirst()) {
+            if (clientData.isBeforeFirst()) {
                 client.firstnameProperty().set(clientData.getString("FirstName"));
                 client.lastnameProperty().set(clientData.getString("LastName"));
                 client.payeeAddressProperty().set(clientData.getString("PayeeAddress"));
@@ -89,7 +89,7 @@ public enum Model {
         ResultSet adminData = databaseDriver.getAdminData(username, password);
 
         try {
-            if (adminData != null && adminData.isBeforeFirst()) {
+            if (adminData.isBeforeFirst()) {
                 loggedIn = true;
             }
         } catch (SQLException e) {
