@@ -1,5 +1,6 @@
 package com.fisthu.mazebank.controller.client;
 
+import com.fisthu.mazebank.model.Transaction;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -14,6 +15,12 @@ public class TransactionCellController implements Initializable {
     public Label senderLbl;
     public Label receiverLbl;
     public Label amountLbl;
+
+    private final Transaction transaction;
+
+    public TransactionCellController(Transaction transaction) {
+        this.transaction = transaction;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
