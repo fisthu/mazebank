@@ -153,4 +153,24 @@ public enum Model {
         }
     }
 
+    public ObservableList<Client> searchClients(String pAddress) {
+        ObservableList<Client> result = FXCollections.observableArrayList();
+        try (ResultSet resultSet = databaseDriver.searchClient(pAddress)) {
+            if (resultSet.isBeforeFirst()) {
+                CheckingAccount checkingAccount = getCheckingAccount(pAddress);
+                SavingAccount savingAccount = getSavingAccount(pAddress);
+
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                LocalDate date = getLocalDate(resultSet.getString("Date"));
+
+                result.add(new Client(firstName, lastName, pAddress, checkingAccount, savingAccount, date));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
+    }
+
 }

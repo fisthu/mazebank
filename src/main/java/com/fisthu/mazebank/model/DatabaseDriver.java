@@ -101,4 +101,22 @@ public class DatabaseDriver {
             throw new RuntimeException(e);
         }
     }
+
+    public ResultSet searchClient(String pAddress) {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery("select * from Clients where PayeeAddress = '%s'".formatted(pAddress));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void depositSaving(String pAddress, double amount) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("update SavingsAccounts set Balance = %f where Owner = '%s'".formatted(amount, pAddress));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
