@@ -2,6 +2,8 @@ package com.fisthu.mazebank.model;
 
 import com.fisthu.mazebank.view.AccountType;
 import com.fisthu.mazebank.view.ViewFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,12 +18,15 @@ public enum Model {
     private Client client;
     private boolean loggedIn;
 
+    private final ObservableList<Client> clients;
+
     Model() {
         viewFactory = new ViewFactory();
         databaseDriver = new DatabaseDriver();
 
         // client data section
         client = new Client("", "", "", null, null, null);
+        clients = FXCollections.observableArrayList();
 
         // admin data section
     }
@@ -46,10 +51,6 @@ public enum Model {
         return client;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
     public void evaluateCred(String username, String password) {
         if (viewFactory.getLoginAccountType() == AccountType.CLIENT) {
             evaluateClientCred(username, password);
@@ -65,6 +66,29 @@ public enum Model {
         viewFactory.showLoginWindow();
     }
 
+    public ObservableList<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients() {
+        ResultSet allClients = databaseDriver.getAllClients();
+        try {
+            while (allClients.next()) {
+                String firstName = allClients.getString("FirstName");
+                String lastName = allClients.getString("LastName");
+                String payeeAddress = allClients.getString("PayeeAddress");
+                LocalDate date = getLocalDate(allClients.getString("Date"));
+
+                CheckingAccount checkingAccount = getCheckingAccount(payeeAddress);
+                SavingAccount savingAccount = getSavingAccount(payeeAddress);
+
+                clients.add(new Client(firstName, lastName, payeeAddress, checkingAccount, savingAccount, date));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void evaluateClientCred(String payeeAddress, String password) {
         ResultSet clientData = databaseDriver.getClientData(payeeAddress, password);
         try {
@@ -75,10 +99,13 @@ public enum Model {
 
                 LocalDate date = getLocalDate(clientData.getString("Date"));
                 client.dateCreatedProperty().set(date);
+
+                CheckingAccount checkingAccount = getCheckingAccount(payeeAddress);
+                SavingAccount savingAccount = getSavingAccount(payeeAddress);
+                this.client.checkingAccountProperty().set(checkingAccount);
+                this.client.savingAccountProperty().set(savingAccount);
+
                 loggedIn = true;
-                // TODO
-
-
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -101,4 +128,29 @@ public enum Model {
         String[] dates = dbDate.split("-");
         return LocalDate.of(Integer.parseInt(dates[0]), Integer.parseInt(dates[1]), Integer.parseInt(dates[2]));
     }
+
+    public CheckingAccount getCheckingAccount(String pAddress) {
+        ResultSet checkingAccount = databaseDriver.getCheckingAccount(pAddress);
+        try {
+            String accountNumber = checkingAccount.getString("AccountNumber");
+            int tLimit = (int) checkingAccount.getDouble("transactionLimit");
+            var balance = checkingAccount.getDouble("Balance");
+            return new CheckingAccount(pAddress, accountNumber, balance, tLimit);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public SavingAccount getSavingAccount(String pAddress) {
+        ResultSet resultSet = databaseDriver.getSavingAccount(pAddress);
+        try {
+            String accountNumber = resultSet.getString("AccountNumber");
+            double wLimit = resultSet.getDouble("withdrawalLimit");
+            var balance = resultSet.getDouble("Balance");
+            return new SavingAccount(pAddress, accountNumber, balance, wLimit);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -64,12 +64,39 @@ public class DatabaseDriver {
         }
     }
 
+    public ResultSet getAllClients() {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery("select * from Clients");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // utility methods
     public int getLastClientId() {
         try {
             Statement statement = connection.createStatement();
             ResultSet clients = statement.executeQuery("select * from sqlite_sequence where name = '%s'".formatted("Clients"));
             return clients.getInt("seq");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet getCheckingAccount(String pAddress) {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery("select * from CheckingAccounts where Owner = '%s'".formatted(pAddress));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet getSavingAccount(String pAddress) {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery("select * from SavingsAccounts where Owner = '%s'".formatted(pAddress));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
