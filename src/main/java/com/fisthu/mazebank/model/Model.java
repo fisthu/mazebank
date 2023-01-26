@@ -15,10 +15,13 @@ public enum Model {
     INSTANCE;
     private final ViewFactory viewFactory;
     private final DatabaseDriver databaseDriver;
-    private Client client;
+    private final Client client;
     private boolean loggedIn;
 
     private final ObservableList<Client> clients;
+
+    private final ObservableList<Transaction> latestTransactions;
+    private final ObservableList<Transaction> allTransactions;
 
     Model() {
         viewFactory = new ViewFactory();
@@ -27,6 +30,8 @@ public enum Model {
         // client data section
         client = new Client("", "", "", null, null, null);
         clients = FXCollections.observableArrayList();
+        latestTransactions = FXCollections.observableArrayList();
+        allTransactions = FXCollections.observableArrayList();
 
         // admin data section
     }
@@ -171,6 +176,40 @@ public enum Model {
         }
 
         return result;
+    }
+
+    public void setLatestTransactions() {
+        prepareTransactions(latestTransactions, 4);
+    }
+
+    public ObservableList<Transaction> getLatestTransactions() {
+        return latestTransactions;
+    }
+
+    public void setAllTransactions() {
+        prepareTransactions(allTransactions, -1);
+    }
+
+    public ObservableList<Transaction> getAllTransactions() {
+        return allTransactions;
+    }
+
+    public void prepareTransactions(ObservableList<Transaction> transactions, int limit) {
+        ResultSet resultSet = databaseDriver.getTransactions(client.payeeAddressProperty().get(), limit);
+
+        try {
+            while (resultSet.next()) {
+                String sender = resultSet.getString("Sender");
+                String receiver = resultSet.getString("Receiver");
+                double amount = resultSet.getDouble("Amount");
+                LocalDate date = getLocalDate(resultSet.getString("Date"));
+                String msg = resultSet.getString("Message");
+
+                transactions.add(new Transaction(sender, receiver, amount, date, msg));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

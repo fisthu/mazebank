@@ -3,6 +3,7 @@ package com.fisthu.mazebank.controller.client;
 import com.fisthu.mazebank.model.Client;
 import com.fisthu.mazebank.model.Model;
 import com.fisthu.mazebank.model.Transaction;
+import com.fisthu.mazebank.view.TransactionCellFactory;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -30,15 +31,25 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         bind();
+        initLatestTransactionList();
+        transListView.setItems(Model.INSTANCE.getLatestTransactions());
+        transListView.setCellFactory(param -> new TransactionCellFactory());
     }
 
     private void bind() {
+        loginDateLbl.setText("Today, %s".formatted(LocalDate.now()));
+
         Client client = Model.INSTANCE.getClient();
         usernameTxt.textProperty().bind(Bindings.concat("Hi, ").concat(client.firstnameProperty()));
-        loginDateLbl.setText("Today, %s".formatted(LocalDate.now()));
         checkingBalanceLbl.textProperty().bind(client.checkingAccountProperty().get().balanceProperty().asString());
         checkingAccountNumberLbl.textProperty().bind(client.checkingAccountProperty().get().accountNumberProperty());
         savingBalanceLbl.textProperty().bind(client.savingAccountProperty().get().balanceProperty().asString());
         savingAccNoLbl.textProperty().bind(client.savingAccountProperty().get().accountNumberProperty());
+    }
+
+    private void initLatestTransactionList() {
+        if (Model.INSTANCE.getLatestTransactions().isEmpty()) {
+            Model.INSTANCE.setLatestTransactions();
+        }
     }
 }

@@ -119,4 +119,13 @@ public class DatabaseDriver {
             throw new RuntimeException(e);
         }
     }
+
+    public ResultSet getTransactions(String pAddress, int limit) {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery("select * from Transactions where Sender = '%1$s' or receiver = '%1$s' limit %2$d".formatted(pAddress, limit));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

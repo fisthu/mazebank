@@ -14,13 +14,13 @@ public class ClientsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        init();
+        initClients();
 
         clientsListView.setItems(Model.INSTANCE.getClients());
         clientsListView.setCellFactory(param -> new ClientCellFactory());
     }
 
-    private void init() {
+    private void initClients() {
         if (Model.INSTANCE.getClients().isEmpty()) {
             Model.INSTANCE.setClients();
         }
