@@ -212,4 +212,11 @@ public enum Model {
         }
     }
 
+    public void sendMoney(String receiver, String sender, double amount) {
+        databaseDriver.sendMoney(receiver, sender, amount);
+
+        double newBalance = databaseDriver.getSavingAccountBalance(sender);
+        client.savingAccountProperty().get().setBalance(newBalance);
+    }
+
 }

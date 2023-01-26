@@ -34,6 +34,7 @@ public class DashboardController implements Initializable {
         initLatestTransactionList();
         transListView.setItems(Model.INSTANCE.getLatestTransactions());
         transListView.setCellFactory(param -> new TransactionCellFactory());
+        sendMoneyBtn.setOnAction(event -> onSendMoney());
     }
 
     private void bind() {
@@ -51,5 +52,19 @@ public class DashboardController implements Initializable {
         if (Model.INSTANCE.getLatestTransactions().isEmpty()) {
             Model.INSTANCE.setLatestTransactions();
         }
+    }
+
+    private void onSendMoney() {
+        String receiver = payeeAddressField.getText();
+        double amount = Double.parseDouble(amountField.getText());
+        String text = messageTxtArea.getText();
+        String sender = Model.INSTANCE.getClient().payeeAddressProperty().get();
+
+        Model.INSTANCE.sendMoney(receiver, sender, amount);
+        Model.INSTANCE.getDatabaseDriver().newTransaction(receiver, sender, amount, text);
+
+        payeeAddressField.setText("");
+        amountField.setText("");
+        messageTxtArea.setText("");
     }
 }

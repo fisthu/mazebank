@@ -128,4 +128,46 @@ public class DatabaseDriver {
             throw new RuntimeException(e);
         }
     }
+
+    public double getSavingAccountBalance(String pAddress) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from SavingsAccounts where Owner = '%s'".formatted(pAddress));
+            return resultSet.getDouble("Balance");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendMoney(String receiver, String sender, double amount) {
+        try {
+            Statement statement = connection.createStatement();
+            double senderBalance = getSavingAccountBalance(sender);
+            if (senderBalance < amount) {
+                throw new IllegalStateException("Balance not enough");
+            }
+
+            double receiverBalance = getSavingAccountBalance(receiver);
+            statement.executeUpdate("update SavingsAccounts set Balance = %f where Owner = '%s'".formatted(receiverBalance + amount, receiver));
+            statement.executeUpdate("Update SavingsAccounts set Balance = %f where Owner = '%s'".formatted(senderBalance - amount, sender));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void newTransaction(String receiver, String sender, double amount, String msg) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("insert into Transactions(Sender, Receiver, Amount, Date, Message) values ('%s', '%s', %f, '%s', '%s')".formatted(
+                    sender,
+                    receiver,
+                    amount,
+                    LocalDate.now(),
+                    msg
+            ));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
