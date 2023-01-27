@@ -4,6 +4,7 @@ import com.fisthu.mazebank.model.Model;
 import com.fisthu.mazebank.model.Transaction;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
@@ -17,6 +18,7 @@ public class TransactionCellController implements Initializable {
   public Label senderLbl;
   public Label receiverLbl;
   public Label amountLbl;
+  public Button msgBtn;
 
   private final Transaction transaction;
 
@@ -32,6 +34,13 @@ public class TransactionCellController implements Initializable {
     transDateLbl.textProperty().bind(transaction.dateProperty().asString());
 
     transactionIcon();
+    msgBtn.setOnAction(event -> onMsgBtn());
+  }
+
+  private void onMsgBtn() {
+    Model.INSTANCE
+        .getViewFactory()
+        .showMessageWindow(senderLbl.getText(), transaction.messageProperty().get());
   }
 
   private void transactionIcon() {
