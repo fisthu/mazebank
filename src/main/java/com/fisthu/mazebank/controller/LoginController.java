@@ -64,7 +64,7 @@ public class LoginController implements Initializable {
         } else {
             payeeAddressField.setText("");
             passwordField.setText("");
-            errorLabel.setText("Login failed");
+            errorLabel.setText("Login failed !!!");
         }
     }
 }
