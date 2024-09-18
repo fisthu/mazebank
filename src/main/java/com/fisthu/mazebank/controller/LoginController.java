@@ -42,7 +42,7 @@ public class LoginController implements Initializable {
         if (Model.INSTANCE.getViewFactory().getLoginAccountType() == AccountType.CLIENT) {
             payeeAddressLbl.setText("Payee Address::");
         } else {
-            payeeAddressLbl.setText("Username:");
+            payeeAddressLbl.setText("Username::");
         }
     }
 
